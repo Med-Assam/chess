@@ -16,23 +16,22 @@ static void set_color(int color) {
 }
 
 static void print_title(void) {
-    set_color(14); // Yellow
+    set_color(14);
     printf("\n");
     printf("╔═══════════════════════════════════════╗\n");
     printf("║       ♟  CHESS GAME IN C  ♟          ║\n");
-    printf("║     Click & Move with Mouse           ║\n");
-    printf("║     Full 3D-Like Experience          ║\n");
+    printf("║     Chess - Play & Enjoy              ║\n");
     printf("╚═══════════════════════════════════════╝\n\n");
-    set_color(7); // White
+    set_color(7);
 }
 
 static void print_menu(void) {
     clear_screen();
-    set_color(14); // Yellow
+    set_color(14);
     printf("\n╔═══════════════════════════════════════╗\n");
     printf("║        CHESS - MAIN MENU              ║\n");
     printf("╚═══════════════════════════════════════╝\n\n");
-    set_color(11); // Cyan
+    set_color(11);
     printf("  ► Type 'play' to start a new game\n");
     printf("  ► Type 'rules' for chess rules\n");
     printf("  ► Type 'quit' to exit\n\n");
@@ -42,10 +41,7 @@ static void print_menu(void) {
 static int parse_move_input(const char *input, Move *m) {
     char from[10], to[10];
     int n = sscanf(input, "%s %s", from, to);
-    if (n != 2) {
-        return 0;
-    }
-    
+    if (n != 2) return 0;
     if (strlen(from) < 2 || strlen(to) < 2) return 0;
     
     from[0] = tolower((unsigned char)from[0]);
@@ -65,33 +61,26 @@ static int parse_move_input(const char *input, Move *m) {
 }
 
 static void print_board_fancy(Game *g) {
-    set_color(7); // White default
+    set_color(7);
     printf("\n  ╔─────────────────────────────────────────╗\n");
     printf("  ║   a   b   c   d   e   f   g   h       ║\n");
     
     for (int r = 0; r < 8; r++) {
         printf("  ║ ");
-        set_color(15); // Bright white for row number
+        set_color(15);
         printf("%d", 8 - r);
         set_color(7);
         printf(" ");
         
         for (int c = 0; c < 8; c++) {
-            // Highlight selected square
-            if (g->piece_selected && g->selected.row == r && g->selected.col == c) {
-                set_color(10); // Green
-            } else {
-                set_color(7); // White
-            }
-            
             Piece p = board_get(g->board, r, c);
             char piece_char = piece_to_char(p);
             
             if (!is_empty(p)) {
                 if (is_white(p)) {
-                    set_color(15); // Bright white 
+                    set_color(15);
                 } else {
-                    set_color(8); // Dark gray
+                    set_color(8);
                 }
                 printf("[%c]", piece_char);
             } else {
@@ -113,7 +102,7 @@ static void print_board_fancy(Game *g) {
 static void play_game(void) {
     Game *game = game_create();
     if (!game) {
-        set_color(12); // Red
+        set_color(12);
         printf("ERROR: Failed to create game\n");
         set_color(7);
         return;
@@ -127,22 +116,22 @@ static void play_game(void) {
         print_title();
         print_board_fancy(game);
         
-        set_color(14); // Yellow
+        set_color(14);
         printf("\n  Status: ");
         
         if (game->state == STATE_PLAYING) {
             if (game->white_turn) {
-                set_color(15); // Bright white
+                set_color(15);
                 printf("WHITE'S TURN");
             } else {
-                set_color(8); // Dark gray
+                set_color(8);
                 printf("BLACK'S TURN");
             }
             set_color(7);
             printf("  |  Move #%d\n", game->full_moves);
             printf("\n  Enter move (e.g., e2 e4): ");
         } else if (game->state == STATE_CHECKMATE) {
-            set_color(12); // Red
+            set_color(12);
             printf("*** CHECKMATE ***");
             set_color(7);
             if (game->white_turn) {
@@ -155,7 +144,7 @@ static void play_game(void) {
             set_color(7);
             printf("\n  Command (play/quit): ");
         } else if (game->state == STATE_STALEMATE) {
-            set_color(11); // Cyan
+            set_color(11);
             printf("*** STALEMATE ***");
             set_color(7);
             printf(" DRAW!\n\n  Command (play/quit): ");
@@ -163,7 +152,6 @@ static void play_game(void) {
         
         if (!fgets(input, sizeof(input), stdin)) break;
         
-        // Trim newline
         size_t len = strlen(input);
         if (len > 0 && input[len-1] == '\n') {
             input[len-1] = '\0';
@@ -171,7 +159,6 @@ static void play_game(void) {
         
         if (strlen(input) == 0) continue;
         
-        // Commands
         if (strncmp(input, "quit", 4) == 0) {
             game->state = STATE_QUIT;
         } else if (strncmp(input, "reset", 5) == 0) {
@@ -182,18 +169,18 @@ static void play_game(void) {
             Move m;
             if (parse_move_input(input, &m)) {
                 if (game_make_move(game, m)) {
-                    set_color(10); // Green
+                    set_color(10);
                     printf("✓ Move accepted!\n");
                     set_color(7);
                     getchar();
                 } else {
-                    set_color(12); // Red
+                    set_color(12);
                     printf("✗ Illegal move!\n");
                     set_color(7);
                     getchar();
                 }
             } else {
-                set_color(12); // Red
+                set_color(12);
                 printf("✗ Invalid format! Use: e2 e4\n");
                 set_color(7);
                 getchar();
@@ -223,7 +210,7 @@ int main(void) {
         } else if (strncmp(input, "rules", 5) == 0) {
             clear_screen();
             print_title();
-            set_color(11); // Cyan
+            set_color(11);
             printf("CHESS RULES:\n\n");
             set_color(7);
             printf("  • PAWN (P/p): Moves 1 forward, 2 on first move. Captures diagonally.\n");

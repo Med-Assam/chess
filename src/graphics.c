@@ -1,6 +1,6 @@
 #include "graphics.h"
 
-// Stub graphics initialization (terminal version)
+// Terminal graphics - stub implementation
 void graphics_init(void) {
 }
 
