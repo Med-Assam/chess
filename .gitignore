@@ -1,0 +1,18 @@
+# Git repository setup for Chess Game
+
+.o
+*.exe
+*.out
+*.a
+*.so
+*.dylib
+chess
+chess.exe
+.DS_Store
+.vscode/
+*.swp
+*.swo
+*~
+.asan*
+vgcore*
+.valgrind*
